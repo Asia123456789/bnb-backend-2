@@ -1,25 +1,29 @@
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
-import 'dotenv/config';
-import { optionalAuth } from './middleware/auth';
-
+import { Hono } from "hono";
+import { serve } from "@hono/node-server";
+import "dotenv/config";
+import { optionalAuth } from "./middleware/auth";
+import { authApp } from "./routes/auth"; // ← importera auth-routes
 
 const app = new Hono();
 
-// Lägg middleware globalt
-app.use('*', optionalAuth);
+// Global middleware
+app.use("*", optionalAuth);
 
-app.get('/', (c) => {
-  const user = c.get('user');
+// Root-route
+app.get("/", (c) => {
+  const user = c.get("user");
   if (user) {
     return c.text(`Bnb backend running 🚀 Logged in as ${user.email}`);
   }
-  return c.text('Bnb backend running 🚀 Not logged in');
+  return c.text("Bnb backend running 🚀 Not logged in");
 });
+
+// Mount auth routes på /auth
+app.route("/auth", authApp);
 
 serve({
   fetch: app.fetch,
   port: 3000,
 });
 
-console.log('✅ Server running at http://localhost:3000');
+console.log("✅ Server running at http://localhost:3000");
