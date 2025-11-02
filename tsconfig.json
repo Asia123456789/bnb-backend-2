@@ -1,5 +1,18 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
+
+
+/*
+{
+  "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -10,4 +23,4 @@
     "skipLibCheck": true
   },
   "include": ["src"]
-}
+}*/
