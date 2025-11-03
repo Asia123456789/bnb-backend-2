@@ -9,7 +9,7 @@ propertyApp.post("/", requireAuth, async (c) => {
   const sb = c.get("supabase");
   const user = c.get("user")!;
   const body = await c.req.json();
-
+  console.log("Creating property for user:", user.id);
   const property = await propertyDb.createProperty(sb, user.id, body);
   return c.json(property, 200);
 });
@@ -26,6 +26,9 @@ propertyApp.get("/:id", optionalAuth, async (c) => {
   const sb = c.get("supabase");
   const id = c.req.param("id");
   const property = await propertyDb.getPropertyById(sb, id);
+  if (!property) {
+    return c.json({ error: "Objektet hittades inte" }, 404);
+  }
   return c.json(property, 200);
 });
 
@@ -33,10 +36,14 @@ propertyApp.get("/:id", optionalAuth, async (c) => {
 propertyApp.patch("/:id", requireAuth, async (c) => {
   const sb = c.get("supabase");
   const user = c.get("user")!;
+  console.log("PATCH user:", user.id); // <-- Lägg till detta
   const id = c.req.param("id");
   const body = await c.req.json();
 
   const updated = await propertyDb.updateProperty(sb, user.id, id, body);
+    if (!updated) {
+    return c.json({ error: "Objektet hittades inte" }, 404);
+  }
   return c.json(updated, 200);
 });
 
@@ -47,6 +54,9 @@ propertyApp.delete("/:id", requireAuth, async (c) => {
   const id = c.req.param("id");
 
   const result = await propertyDb.deleteProperty(sb, user.id, id);
+  if(!result){
+    return c.json({ error: "Objektet hittades inte" }, 404);
+  }
   return c.json(result, 200);
 });
 

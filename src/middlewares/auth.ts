@@ -47,8 +47,6 @@ async function withSupabase(c: Context) {
       error,
     } = await sb.auth.getUser();
 
-    console.log("withSupabase fetched user:", user);
-
     // Om JWT har gått ut, försök att refresha session
     if (error && error.code === "session_expired") {
       const { data: refreshData, error: refreshError } = await sb.auth.refreshSession();

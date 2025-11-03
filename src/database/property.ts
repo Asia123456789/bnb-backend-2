@@ -9,10 +9,10 @@ export async function createProperty(
 ) {
   const { data: created, error } = await sb
     .from("properties")
-    .insert([{ ...data, user_id: userId }])
+    .insert([{ ...data, owner_id: userId }])
     .select()
     .single();
-
+  console.log("createProperty created:", created, "error:", error);
   if (error) throw error;
   return created;
 }
@@ -27,8 +27,8 @@ export async function getProperties(sb: SupabaseClient) {
 // Hämta property med specifikt id
 export async function getPropertyById(sb: SupabaseClient, id: string) {
   const { data, error } = await sb.from("properties").select("*").eq("id", id).single();
-  if (error) throw error;
-  return data;
+  if (error) return null;
+  return data as Property;
 }
 
 // Uppdatera property
@@ -39,22 +39,29 @@ export async function updateProperty(
   data: Partial<Property>
 ) {
   const { data: existing, error: fetchError } = await sb.from("properties").select("*").eq("id", id).single();
-  if (fetchError) throw fetchError;
-  if (existing.user_id !== userId) throw new Error("Inte tillåtet");
-
+  if (fetchError) return null;
+  if (existing.owner_id !== userId) return null
+  console.log("existing.owner_id:", existing.owner_id);
   const { data: updated, error } = await sb.from("properties").update(data).eq("id", id).select().single();
+  console.log("updateProperty updated:", updated, "error:", error);
   if (error) throw error;
-  return updated;
+  return updated as Property;
 }
 
 // Ta bort property
 export async function deleteProperty(sb: SupabaseClient, userId: string, id: string) {
   const { data: existing, error: fetchError } = await sb.from("properties").select("*").eq("id", id).single();
-  if (fetchError) throw fetchError;
-  if (existing.user_id !== userId) throw new Error("Inte tillåtet");
-
+  if(!existing){
+    return null;
+  }
+  if (existing.owner_id !== userId){
+    return null;
+  }
+  
   const { error } = await sb.from("properties").delete().eq("id", id);
-  if (error) throw error;
+  if (error) {
+    return null;
+  }
   return { message: "Property borttagen" };
 }
 
