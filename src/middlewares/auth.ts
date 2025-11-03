@@ -37,7 +37,7 @@ function createSupabaseForRequest(c: Context) {
   });
 }
 
-async function withSupabase(c: Context, next: Next) {
+async function withSupabase(c: Context) {
   if (!c.get("supabase")) {
     const sb = createSupabaseForRequest(c);
     c.set("supabase", sb);
@@ -47,29 +47,32 @@ async function withSupabase(c: Context, next: Next) {
       error,
     } = await sb.auth.getUser();
 
+    console.log("withSupabase fetched user:", user);
+
     // Om JWT har gått ut, försök att refresha session
     if (error && error.code === "session_expired") {
       const { data: refreshData, error: refreshError } = await sb.auth.refreshSession();
 
       c.set("user", !refreshError && refreshData.user ? refreshData.user : null);
     } else {
+      console.log("withSupabase setting user:", typeof user);
       c.set("user", error ? null : user);
     }
   }
-
-  return next();
 }
 
 // Middleware för routes där auth är valfri
 export async function optionalAuth(c: Context, next: Next) {
-  return withSupabase(c, next);
+  await withSupabase(c);
+  return next();
 }
 
 // Middleware för routes där auth krävs
 export async function requireAuth(c: Context, next: Next) {
-  await withSupabase(c, next);
+  await withSupabase(c);
 
   const user = c.get("user");
+  console.log("requireAuth user:", typeof user);
   if (!user) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }

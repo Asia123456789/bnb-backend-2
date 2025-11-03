@@ -1,7 +1,7 @@
 // src/database/booking.ts
-import { supabase } from "../lib/supabase";
-import { Booking } from "../types/booking";
-import { getPropertyById } from "./property";
+/*ort { supabase } from "../lib/supabase.js";
+import { Booking } from "../types/booking.js";
+import { getPropertyById } from "./property.js";
 
 export async function getBookings(): Promise<Booking[]> {
   const { data, error } = await supabase.from("bookings").select("*");
@@ -43,8 +43,7 @@ export async function createBooking(booking: Partial<Booking>): Promise<Booking>
 export async function deleteBooking(id: string): Promise<void> {
   const { error } = await supabase.from("bookings").delete().eq("id", id);
   if (error) throw error;
-}
-
+}*/
 
 
 // src/database/booking.ts

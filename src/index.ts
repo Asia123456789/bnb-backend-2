@@ -8,8 +8,16 @@ dotenv.config();
 
 import { optionalAuth } from "./middlewares/auth.js";
 import { authApp } from "./routes/auth.js";
-import { propertyApp } from "./routes/property.js";
+import { propertyApp } from "./routes/properties.js";
 import { bookingApp } from "./routes/booking.js";
+
+process.on("uncaughtException", (err) => {
+  console.error("❌ Ohanterat fel:", err);
+});
+process.on("unhandledRejection", (err) => {
+  console.error("❌ Ohanterat Promise-fel:", err);
+});
+
 
 const app = new Hono({
   strict: false,
