@@ -1,3 +1,4 @@
+//src/routes/auth.ts
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { registerValidator } from "../validators/authValidators.js";

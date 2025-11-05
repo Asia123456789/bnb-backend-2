@@ -1,3 +1,4 @@
+//src/database/user.ts
 import type { PostgrestSingleResponse, SupabaseClient, User } from "@supabase/supabase-js";
 
 export async function getProfile(sb: SupabaseClient, uid: string){

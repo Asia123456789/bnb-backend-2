@@ -1,3 +1,4 @@
+//src/routes/properties.ts
 import { Hono } from "hono";
 import { requireAuth, optionalAuth } from "../middlewares/auth.js";
 import * as propertyDb from "../database/property.js";

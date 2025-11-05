@@ -1,3 +1,4 @@
+// src/middlewares/auth.ts
 import type { Context, Next } from "hono";
 import { setCookie } from "hono/cookie";
 import { createServerClient, parseCookieHeader } from "@supabase/ssr";
