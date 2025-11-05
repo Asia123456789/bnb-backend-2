@@ -44,9 +44,10 @@ bookingApp.post("/", requireAuth, async (c) => {
     console.log("Creating booking for property:", body.propertyId, user);
     const booking = await createBooking(sb, user.id, {
       property_id: body.propertyId,
-      check_in: moment(body.checkIn).toISOString(),
-      check_out: moment(body.checkOut).toISOString(),
+      check_in: body.checkIn,   // skicka som ren sträng
+      check_out: body.checkOut, // skicka som ren sträng
     });
+
 
     console.log("✅ Created booking:", booking);
 
