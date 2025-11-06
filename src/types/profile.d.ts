@@ -1,3 +1,4 @@
+//profile.d.ts
 export type UUID = string;
 
 export interface Profile {

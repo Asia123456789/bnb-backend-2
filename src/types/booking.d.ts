@@ -1,3 +1,4 @@
+//src/types/booking.d.ts
 import { UUID } from './profile';
 
 export interface Booking {

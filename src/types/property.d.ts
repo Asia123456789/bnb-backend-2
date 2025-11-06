@@ -1,3 +1,4 @@
+//property.d.ts
 import { UUID } from './profile';
 
 export interface Property {
